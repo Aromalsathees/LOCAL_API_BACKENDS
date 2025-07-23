@@ -1,6 +1,4 @@
-Django==4.2.15
 gunicorn
 whitenoise
+dj-database-url
 python-decouple
-djangorestframework
-django-cors-headers
