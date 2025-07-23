@@ -16,10 +16,7 @@ PLACES_DATA = {
             {"name": "Bar Kyu", "description": "Cozy bar in Tokyo", "rating": 4.3, "image": "https://local-api-backends-6.onrender.com/static/659-kue-bar-at-westin-hotel-in-pune-maharashtra--food-drinks-image-Kue_bar_110711_MD_16.jpg"},
             {"name": "The SG club", "description": "club", "rating": 4.1, "image": "https://local-api-backends-6.onrender.com/static/a0000782_main.jpg"}
         ],
-        # "view cafe": [
-        #     kabukicho-tower-night
-        #     kabukicho-tower-night
-        # ],
+     
     },
     "America": {
         "Temples": [
