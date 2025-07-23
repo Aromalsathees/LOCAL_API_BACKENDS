@@ -15,3 +15,5 @@ env/
 # Static/media files (optional)
 staticfiles/
 media/
+venv/
+static/
