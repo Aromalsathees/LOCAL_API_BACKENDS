@@ -3,4 +3,4 @@ gunicorn
 whitenoise
 python-decouple
 djangorestframework
-corsheaders
+django-cors-headers
