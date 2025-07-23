@@ -1,15 +1,18 @@
 from pathlib import Path
 from decouple import config
 import os
+import dj_database_url  # ✅ Needed for production DB (Render uses PostgreSQL by default)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BASE_DIR.parent
 
-SECRET_KEY = config('SECRET_KEY')  # ⛔ Do not hardcode
+# Secret Key & Debug
+SECRET_KEY = config('SECRET_KEY')  # Set this in Render → Environment
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']  # Change to your Render domain later
+ALLOWED_HOSTS = ['local-api-backends-7.onrender.com']  # ✅ Use only your Render domain
 
+# Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,9 +24,10 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Required for static files on Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -33,18 +37,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+# CORS
 CORS_ALLOWED_ORIGINS = [
     "https://local-api-frontends.vercel.app",
 ]
 
-
 ROOT_URLCONF = 'Ecom.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [PROJECT_DIR / 'frontend' / 'templates'],  # Adjust path if needed
+        'DIRS': [PROJECT_DIR / 'frontend' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,13 +63,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Ecom.wsgi.application'
 
+# ✅ Database Configuration for Render
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'))
 }
 
+# Password Validators
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -73,17 +76,36 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# ✅ Static Files (important for Render + WhiteNoise)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # ✅ required for Render
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# ✅ Logging (to see errors in Render logs)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console':{
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 
 # from pathlib import Path
