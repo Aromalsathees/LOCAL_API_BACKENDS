@@ -33,7 +33,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://local-api-frontends.vercel.app",
+]
+
 
 ROOT_URLCONF = 'Ecom.urls'
 
